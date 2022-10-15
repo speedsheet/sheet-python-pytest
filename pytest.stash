@@ -1,0 +1,394 @@
+# <#>pytest<> SpeedSheet
+<b>Find it faster.<>
+
+This is an interactive <b>pytest<> cheat sheet. pytest is Python library to create and run unit tests. Use the search to instantly get answers.
+
+
+<table><col><b>Basics<>
+
+<*><link "?q=install-only">Install<><>
+
+<*><link "?q=configure-only">Configure<>
+<link "?q=commands-only">Commands<>
+<link "?q=configure-only+pytest">pytest.ini<>
+<link "?q=reference+plugins">Plugins<><>
+
+<*><link "?q=online-docs">Online Docs<><><><col>    <><col><b>Tests<>
+
+<*><link "?q=test-only+basics">Basic Test<><>
+
+<*><link "?q=test-only+assert">Assert<>
+<link "?q=test-only+assert+exception">Assert Exception<><>
+
+<*><link "?q=fixture-only">Fixtures<>
+<link "?q=markers-only">Markers<><><><>
+
+
+# Online Documents
+@
+@ links, online, online-docs-only
+
+### Official Docs
+<l>https://docs.pytest.org<>
+
+### PyPi
+<l>https://pypi.org/project/pytest/<>
+
+
+
+# Library
+
+### Install
+
+<cb>pip install pytest<>
+@
+@ install, download, install-only
+
+
+### Install - PIP Requirements.txt
+
+Add:
+
+<cb>pytest<>
+@
+@ install, download, install-only
+
+
+
+# Configuration
+@
+@ config-only, configure-only, configuration-only
+
+
+### Configuration File - pytest.ini
+
+<cb>[pytest]
+
+<#># Set Source Folders:<>
+pythonpath = <v>./src<>
+
+<#># Set Test Folder (defaults to tests):<>
+testpaths = <v>tests<><>
+
+
+<c>pythonpaths<>:
+
+<in>Requires pytest 7+.<>
+
+<c>testpaths<>:
+
+<in>Generally not needed.
+pytest searches for directories containing <c>test_*.py<> and <v>*_test.py<> files and runs them.<>
+@
+@ python_paths, pythonpaths, testpaths, test_paths
+@ ini, source, test, folders, directories
+
+
+
+# Commands
+@
+@ cli
+@ cli-only, command-only, commands-only
+
+
+### Command - Pytest Version
+
+<cb>pytest --version<>
+@
+@ --version
+
+
+
+### Command - Run Tests
+
+<cb>python -m pytest<>
+@
+@ execute
+
+
+
+### Command - Run Tests - Individual Test
+
+<cb>python -m pytest <v>tests/test_name.py<><>
+@
+@ execute
+
+
+
+### Command - Run Tests - Except Marker
+
+<cb>python -m pytest "not <v>marker_name<>"<>
+@
+@ execute, not
+
+
+
+### Command - Fixtures - List All
+
+<cb>python -m pytest --fixtures<>
+@
+@ --fixtures
+
+
+
+### Command - Markers - List All
+
+<cb>python -m pytest --markers<>
+
+
+Lists existing markers.
+@
+@ --markers
+
+
+
+# Tests
+@
+@ test-only, tests-only
+
+
+### Test - Basic Test
+
+<cb>def test_<v>name<>():
+    <v>...<>
+    assert <v>...<><>
+
+
+Test functions must start with <c>test_<> .
+@
+@ test-basics-only
+
+
+
+### Test Assert
+
+<cb>assert <v>actual<> == <v>expected<><>
+
+<cb>assert <v>actual<> != <v>expected<><>
+@
+@ assertequal, assert equals, assertnotequal, assertin, contains
+
+
+
+### Test Assert - Equals
+
+<cb>assert <v>actual<> == <v>expected<><>
+@
+@ assertequal, assert equals
+
+
+
+### Test Assert - Not Equals
+
+<cb>assert <v>actual<> != <v>expected<><>
+@
+@ assertnotequal
+
+
+
+### Test Assert - Contains
+
+<cb>assert <v>value<> in <v>collection<><>
+@
+@ assertin
+
+
+
+### Test Assert - Not Contains
+
+<cb>assert <v>value<> not in <v>collection<><>
+@
+@ assertnotin
+
+
+
+### Test Assert - Exception
+
+<cb>with pytest.raises(<v>Exception1<>):
+    <v>...<><>
+
+
+Expects <c>Exception1<> to be thrown.
+@
+@ raised, raises, pytest.raises(), .raises()
+
+
+
+# Test Fixtures
+@
+@ test-fixture-only, test-fixtures-only, fixture-only, fixtures-only
+
+
+### Test Fixture - Setup
+
+<cb>@fixture
+def <v>fixture_name<>():
+    return <v>value<>()<>
+
+Define:
+
+<cb>from pytest import fixture
+
+\@fixture
+def <v>fixture_1<>():
+    return <v>value<>()<>
+
+Access:
+
+<cb>def test_1(<v>fixture_1<>):
+    <v>...<><>
+
+
+Creates a component and injects it into a test.
+
+The fixture function name and the test parameter name must match.
+
+
+Official Doc: <l "https://docs.pytest.org/en/7.1.x/reference/reference.html#pytest-fixture-api">pytest Fixtures<>
+@
+@ setup
+
+
+
+### Test Fixture - Setup, Tear Down
+
+<cb>@fixture
+def <v>fixture_1<>():
+    <v>...<>
+    yield <v>fixture_1<>
+    <v>fixture_1<>.cleanup()<>
+
+Usage:
+
+<cb>from pytest import fixture
+
+\@fixture
+def <v>fixture<>():
+
+    <v>fixture<> = <v>Component1<>()
+
+    yield <v>fixture<>          <#>#1<>
+
+    <v>fixture<>.cleanup()      <#>#2<><>
+
+To enable a tear down section, use <c>yield<> to return the value and then add the tear down code after.
+
+\#1 - Returns the created / configured component.
+\#2 - Tear down happens after the <c>yield<> code.
+
+
+Also Called: Fixture Finalization
+
+
+Official Doc: <l "https://docs.pytest.org/en/7.1.x/reference/reference.html#pytest-fixture-api">pytest Fixtures<>
+@
+@ teardown, cleanup, finalization
+
+
+
+### Test Fixture - Scope
+
+<cb>@pytest.fixture(scope = '<v>function<>')
+def <v>component_1<>():
+    <v>...<><>
+
+
+Defines the scope or lifetime of a fixture.
+
+Fixtures are only created once in a given scope.
+<c>'function'<> is the default scope.
+
+
+Scopes:
+
+<card><table><col><c>function<>     <><col>Recreated every test function.<><col>(default)<>
+<col><c>class<><><col>Once per test class.<>
+<col><c>module<><><col>Once for the test module.<>
+<col><c>package<><><col>Once for the entire package.<>
+<col><c>session<><><col>Once for the entire test session.<><><>
+
+
+Official Doc: <l "https://docs.pytest.org/en/6.2.x/fixture.html#scope-sharing-fixtures-across-classes-modules-packages-or-session">Fixture Scope<>
+@
+@ lifetime, scope=, function, class, class, module, package, session
+
+
+
+### Test Fixtures - Shared Fixtures / conftest.py
+
+Place fixtures that are shared across test files into <c>conftest.py<>.
+
+conftest.py:
+
+<cb>from pytest import fixture
+
+\@fixture
+def <v>shared_fixture_1<>():
+    return <v>...<><>
+
+Fixtures defined in the conftest.py in the root test folder are shared across all test files.
+Fixtures defined in the conftest.py in a module folder are only accessible from tests in that folder.
+
+
+
+# Markers
+@
+@ test-marker-only, test-markers-only, marker-only, markers-only
+
+
+### Marker - Define / Add
+
+<cb>@pytest.mark.<v>marker_name<>
+def test_<v>name<>():
+    <v>...<><>
+
+
+
+### Markers - Define Allowable Markers
+
+In pytest.ini:
+
+<cb>[pytest]
+markers =
+    <v>marker_1<>: description 1
+    <v>marker_2<>: description 2
+    <v>...<><>
+
+
+### Marker - Skip
+
+<cb>@pytest.mark.skip('<v>comment<>')
+def test_<v>name<>():
+    <v>...<><>
+@
+@ @pytest.mark.skip(), mark.skip()
+
+
+
+# Reference - Plugins
+
+
+### Plugin List
+
+<l>https://docs.pytest.org/en/7.0.x/reference/plugin_list.html<>
+@
+@ link, online, documents
+
+
+
+### Plugin - HTML Report
+
+<l>https://pypi.org/project/pytest-html/<>
+@
+@ pytest-html
+
+
+
+# Terms
+@
+@ terms-only
+
+
+
+### Test Fixture
+A test fixture is a well defined and consistent environment created for tests so they can predictably validate code.
